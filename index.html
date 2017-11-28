@@ -31,8 +31,24 @@ http://bit.ly/dtla-11-29
 ---
 
 ## What is our objective?
+To learn ways we can build cryptographically secure programs with JavaScript!
 
 ---
+## Why do we want to learn about cryptographically secure programs?
+
+Because cryptography is tool that allows us to build applications with certain assurances:
+*   that data we _receive_ is *from* who we think it's from
+*   that data we _send_ can only be read by the person we intend
+
+
+
+...and these assurances give us more control over our own data.
+
+---
+
+## Cryptography => Control over data    
+---
+
 name: how-will
 ## How will we do this?
 ---
@@ -48,7 +64,7 @@ template: how-will
 
 ---
 ## Contents
-1. Call Stack
+1. Buffers
 2. The Lonely Function
 3. The Base Case
 
@@ -58,16 +74,34 @@ _Interlude:  How to pair program really well_
 
 ---
 class: center, middle
-name: call-stack
-# The Call Stack
+# Buffers
 
 
 ---
-## The Call Stack
+name: buffers
+## Buffers in Node.js
 
 --
-the structure used to store all currently running function
-calls.
+template: buffers
+* a Buffer is the interface we use to __read from__ and __change__ chunks of binary
+  data.
+
+--
+template: buffers
+* It corresponds to a block of memory
+
+--
+template: buffers
+![](assets/buffer_empty.svg)
+
+---
+template: buffers
+To get hold of a buffer in Node.js you need to allocate some amount of space
+![](assets/buffer_empty_alloc_code.svg)
+
+---
+template: buffers
+![](assets/buffer_empty_filled_0.svg)
 
 ---
 ### You can imagine the call stack looks like this
