@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>JSHP-Recursion</title>
+    <title>JSHP Crypto</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <style type="text/css">
       @import url(https://fonts.googleapis.com/css?family=Roboto+Slab);
@@ -14,6 +14,7 @@
         font-weight: normal;
       }
       .half-screen {width: 50%; margin-top: 20px;}
+      .orange { background: #FF6600; color: #FFF }
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
     </style>
   </head>
@@ -45,7 +46,7 @@ Because cryptography is tool that allows us to build applications with certain a
 ...and these assurances give us more control over our own data.
 
 ---
-
+class: center, middle
 ## Cryptography => Control over data    
 ---
 
@@ -64,24 +65,122 @@ template: how-will
 
 ---
 ## Contents
-1. Buffers
-2. The Lonely Function
-3. The Base Case
+1. Public-Key Cryptography
+2. Sodium
+3. Buffers
 
 _Interlude:  How to pair program really well_
 4. Pair Programming!
 5. Recap & Review
 
 ---
-class: center, middle
-# Buffers
+class: center, middle, orange
+# Public Key Cryptography
 
+---
+name: public-key
+## Public Key Crypto
+---
+template: public-key
+1. Public Key
+2. Private (secret) key
+---
+template: public-key
+
+<img src="assets/pk.svg" height="400" width="640" />
+---
+template: public-key
+
+### Scenario:
+### Alice wants to send a message to Bob
+
+--
+She doesn't care if he knows it came from her. (it's anonymous)
+---
+
+template: public-key
+
+![](assets/crypto_talk_alice.svg)
+---
+template: public-key
+
+![](assets/crypto_talk_alice_bob_1.svg)
+
+---
+template: public-key
+They each have a secret key.
+They don't share this with anyone.
+
+<img src="assets/crypto_talk_alice_bob_secret_keys.svg" height="400" width="640" style="margin-bottom: 20px"/>
+
+---
+template: public-key
+
+They each have a public key, too. They give this away to anyone!
+
+![](assets/crypto_talk_alice_bob_public_keys.svg)
+
+---
+template: public-key
+
+![](assets/crypto_talk_alice_bob_encrypt_message_1.svg)
+
+---
+template: public-key
+
+<img src="assets/crypto_talk_alice_bob_encrypt_message_3.svg" />
+---
+template: public-key
+
+![](assets/crypto_talk_alice_bob_encrypt_message_2.svg)
+
+---
+template: public-key
+### Scenario:
+### Bob receives a message
+--
+
+He doesn't know who it came from. 
+---
+template: public-key
+
+![](assets/crypto_talk_bob_encrypted_message.svg)
+
+---
+template: public-key
+Bob decrypts with his __public__ & __private key__
+
+![](assets/crypto_talk_bob_encrypted_message2.svg)
+
+---
+template: public-key
+## Questions:
+*   What do I need from you if I want to send you an encrypted message?
+
+--
+
+*   What would happen if a bad person impersonated me, copied my public key, 
+and got someone to send them an encrypted message that was meant for me?
+
+---
+class: center, middle, orange
+
+# libsodium 
+## fast & secure crypto library
+
+---
+## Sodium
+---
+
+class: center, middle, orange
+
+# Buffers in Node.js
 
 ---
 name: buffers
-## Buffers in Node.js
+## Buffers
 
---
+---
 template: buffers
 * a Buffer is the interface we use to __read from__ and __change__ chunks of binary
   data.
@@ -104,259 +203,7 @@ template: buffers
 ![](assets/buffer_empty_filled_0.svg)
 
 ---
-### You can imagine the call stack looks like this
-![](assets/call-stack01.svg)
----
-```javascript
-function startApp () {
-  return getData()
-}
 
-function getData () {
-  var response = fetch(‘www.api.com/users/ids’)
-  return formatReponse(response)
-}
-
-function formatResponse(data) {
-  return data.map(d => d.userProfilePic)
-}
-
-startApp()
-```
-### this code...
----
-class: center, middle
-![](assets/call-stack03_3frames.svg)
-
-### creates this stack
----
-class: middle
-.left.half-screen[```javascript
-function startApp () {
-  return getData()
-}
-startApp()
-```]
-.right[![](assets/call-stack_single-frame.svg)]
-
-.left[#### function call]
-.right[#### stack frame]
----
-name: two-stack-frames
-class: middle
-.left.half-screen[```javascript
-function startApp () {
-  return getData()
-}
-function getData () {
-  var response = fetch('/api/users')
-  return formatReponse(response)
-}
-startApp()
-```]
-.right[![](assets/call-stack_two-frame.svg)]
-
-.left[#### function call]
-.right[#### stack frames]
----
-class: center, middle
-## A stack frame is added for each function that is run.
----
-
-When one returns, it is removed from the stack and its
-return value is passed into the stack frame below
-
-.center[![](assets/call-stack_clear-frame.svg)]
-
----
-class: center, middle
-name: lonely-function
-# The Lonely Function
----
-class: middle
-```javascript
-function solo () {
-  console.log('hi')
-  solo()
-}
-
-solo()
-```
---
-### A function can call itself
----
-### Every time it is run, a new stack frame is created and placed on the call stack
-
-#### One of two things happen:
-* Either the function returns and is cleared
-* Or the function calls another function (possibly itself!)
-
----
-class: middle
-```javascript
-function solo () {
-  console.log('hi')
-  solo()
-}
-
-solo()
-```
-### but when you run this function...
----
-
-class: center, middle
-.center[![](https://www.truckersforum.net/forum/attachments/abloximages-chicago2-vip-townnews-com_thesunchronicle-com_cont91d8f2970e6212eee09a9e82e1db2563-jpg.21643/)]
-### Maximum call stack size exceeded!
----
-class: center, middle
-
-# Base Case
----
-# Base Case
-* the terminating condition
---
-
-* what function does when it's "done" calling itself
---
-
-#### Identify the base case and break down (or build up) from there
----
-name: base-case-example
-## Base case example
---
-
-.bottom[### Calculating `n` to the power of `P`!]
----
-class: middle
-```javascript
-function power (number, exponent) {
-
-}```
----
-name: exponent-example
-class: middle
-```javascript
-function power (number, exponent) {
-
-}
-
-power(2, 3) // -> 8
-```
----
-name: exponents-review
-### exponents review:
-Shorthand for multiplying a number by itself some number of times
----
-### exponents review:
-2<sup>1</sup> === 2
----
-
-### exponents review:
-2<sup>1</sup> === 2
-
-2<sup>2</sup> === 2 X 2
----
-### exponents review:
-
-2<sup>1</sup> === 2
-
-2<sup>2</sup> === 2 X 2
-
-2<sup>3</sup> === 2 X 2 X 2
----
-### exponents review:
-Exponents are associative
-
-2<sup>4</sup> === 2<sup>2</sup> X 2<sup>2</sup> === (2 X 2 ) X (2 X 2)
-
----
-### exponents review:
-Exponents are associative
-
-2<sup>4</sup> === 2<sup>2</sup> X 2<sup>2</sup> === (2 X 2 ) X (2 X 2)
-
-2<sup>5</sup> === 2 X (2<sup>4</sup>)
----
-### exponents review:
-Exponents are associative
-
-2<sup>4</sup> === 2<sup>2</sup> X 2<sup>2</sup> === (2 X 2 ) X (2 X 2)
-
-2<sup>5</sup> === 2 X (2<sup>4</sup>)
-
---
-
-
-2<sup>5</sup> === 2 X  2 X (2<sup>3</sup>)
-
---
-
-2<sup>5</sup> === 2 X  2 X 2 X (2<sup>2</sup>)
-
---
-
-2<sup>5</sup> === 2 X  2 X 2 X 2 X (2<sup>1</sup>)
----
-class: center, middle
-### There is a recursive pattern here!
-
----
-name: exponent-example
-class: middle
-```javascript
-function power (number, exponent) {
-    if (//base case here) {
-    // then return something!
-    } else {
-    return // recursion!?!?!
-    }
-}
-
-power(2, 3) // -> 8
-```
----
-name: exponent-example
-class: middle
-```javascript
-function power (number, exponent) {
-    if (//base case here) {
-    // then return something!
-    } else {
-    return // recursion!?!?!
-    }
-}
-
-power(2, 3) // -> 8
-```
----
-name: exponent-example
-class: middle
-```javascript
-function power (number, exponent) {
-    if (exponent === 1) {
-        return number
-    } else {
-    return // recursion!?!?!
-    }
-}
-
-power(2, 3) // -> 8
-```
----
-name: exponent-example
-class: middle
-```javascript
-function power (number, exponent) {
-    if (exponent === 1) {
-        return number
-    } else {
-        return number * power(number, exponent - 1)
-    }
-}
-
-power(2, 3) // -> 8
-```
----
 # Interlude:
 How to be great at pair-programming
 
