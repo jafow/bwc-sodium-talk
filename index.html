@@ -24,7 +24,7 @@
 class: center, middle
 
 # Sign in here
-http://bit.ly/dtla-11-29
+http://bit.ly/crypto-js
 
 ---
 # Build With Code: Cryptographically Secure Applications 
@@ -54,14 +54,14 @@ name: how-will
 ## How will we do this?
 ---
 template: how-will
-1. 
+1. Building a mental model
 
 --
 template: how-will
-2.
+2. Seeing examples
 
 --
-3. Writing your own code to write secure programs!
+3. Pair Programming!
 
 ---
 ## Contents
@@ -170,6 +170,38 @@ class: center, middle, orange
 
 ---
 ## Sodium
+*   fast, unopinated, flexible
+*   widely used
+*   cross platform
+*   fun!
+---
+
+## Patterns in sodium
+1. Create a buffer 
+
+```javascript
+var bufferSize = 32
+var buffer = Buffer.alloc(bufferSize)
+
+var PUBLIC_KEYSIZE = sodium.crypto_box_PUBLICKEYBYTES
+var anotherBuffer = Buffer.alloc(PUBLIC_KEYSIZE)
+
+```
+
+---
+## Patterns in sodium
+1. Create a buffer 
+2. Use sodium to fill that buffer with some hashed data
+
+```javascript
+var bufferSize = 32
+var buffer = Buffer.alloc(bufferSize)
+
+sodium.create_secret_key(buffer)
+
+// now "buffer" has been filled with some data
+```
+
 ---
 
 class: center, middle, orange
@@ -216,11 +248,23 @@ How to be great at pair-programming
 --
 * be good to one another
 ---
-
 # Exercises
+## Buffers!
+### https://glitch.com/edit/#!/bwc-buffers101
 
-### http://bit.ly/2r3aT5G
+--- 
+
+## crypto communications! 
+### https://glitch.com/edit/#!/bwc-hello-sodium
 ---
+
+class: center, middle
+# Thanks!
+our sponsors: Codesmith, CrossCampus
+
+Jared Fowler
+jared.a.fowler@gmail.com
+
 
     </textarea>
     <script src="assets/remark.min.js" type="text/javascript">

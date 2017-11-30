@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "http-server": "^0.10.0",
     "tap-spec": "^4.1.1",
     "tape": "^4.8.0"
   },
