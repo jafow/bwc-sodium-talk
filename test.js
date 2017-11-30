@@ -29,7 +29,7 @@ test('testing `filledBuffer` function', function (t) {
 test('testing `rangeBuffer` function', function (t) {
   t.plan(2)
 
-  t.deepEqual(buffer.rangeBuffer(), Buffer.from([97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107], 'should return a buffer with numbers 97-107')
+  t.deepEqual(buffer.rangeBuffer(), Buffer.from([97, 98, 99, 100, 101, 102, 103, 104, 105, 106]), 'should return a buffer with numbers 97-106')
   t.equal(buffer.rangeBuffer().toString(), 'abcdefghij')
 })
 
@@ -37,6 +37,6 @@ test('testing `rangeBuffer` function', function (t) {
 test('testing `convertStringToBuffer` function', function (t) {
   t.plan(2)
 
-  t.deepEqual(buffer.convertStringToBuffer('abc'), Buffer.from('abc'), 'Should return a buffer of 'abc' with utf8 encoding when called with "abc")
+  t.deepEqual(buffer.convertStringToBuffer('abc'), Buffer.from('abc'), 'Should return a buffer of "abc" with utf8 encoding when called with "abc"')
   t.deepEqual(buffer.convertStringToBuffer('deadbeef'), Buffer.from('deadbeef'), 'should return a buffer from a string')
 })
